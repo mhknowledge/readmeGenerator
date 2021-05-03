@@ -35,21 +35,37 @@ inquirer.prompt (
             message: 'Provide Usage details:',
         },
         {
-            type: 'input',
-            name: 'tests',
-            message: 'List your tests:',
-        }
+        type: 'list',
+        message: 'Please choose your license',
+        name: 'license',
+        choices: ['GNU', 'Apache'],
+        validate: (value) => { if (value) { return true } else { return "Please enter a value to continue"  } },
+      },
+      {
+        type: 'input',
+        message: 'Please enter your email address',
+        name: 'email',
+        validate: (value) => { if (value) { return true } else { return "Please enter a value to continue"  } },
+      },
+       
     ])
     .then((data) => {
+        let licenseLink = ""
+  if (data.license==="Apache") {
+   licenseLink =  "[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)"
+  }
+  else if (data.license==="GNU"){
+    licenseLink = "[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)"
+  }
         const fileName = `READEME.md`;
         const readME =   
-      `${data.title}
-       ${data.description}
-       ${data.tableOfContents}
-       ${data.installation}
-       ${data.usage}
-       ${data.contributors}
-       ${data.tests}`
+      `#${data.title}
+       ##${data.description}
+      ##${data.tableOfContents}
+       ##${data.installation}
+       ##${data.usage}
+       ##${data.contributors}
+       ##${licenseLink}`
 
        fs.writeFile(filename, readMe, (err) => 
        err ? console.log(err): console.log(`Success!!!`)
